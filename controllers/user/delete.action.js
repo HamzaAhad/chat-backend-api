@@ -6,9 +6,7 @@ const FriendRequestModel = db.friend_requests;
 module.exports.deleteUsers = async (request, response) => {
   try {
     let { body } = request;
-    console.log("body", body);
 
-    console.log(body);
     const data = await FriendRequestModel.update(
       { status: "deleted" },
       {

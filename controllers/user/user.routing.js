@@ -11,6 +11,7 @@ const {
 } = require("./get-blocked-notification-users.action.js");
 const { changeUsername } = require("./change-username.action.js");
 const { update } = require("./update.action.js");
+const { deleteMessage } = require("./delete-message.action");
 module.exports = {
   "/:id": {
     get: {
@@ -65,6 +66,12 @@ module.exports = {
   "/delete": {
     post: {
       action: deleteUsers,
+      level: "public",
+    },
+  },
+  "/delete-messages": {
+    post: {
+      action: deleteMessage,
       level: "public",
     },
   },

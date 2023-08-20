@@ -8,7 +8,6 @@ const config = require("../../config/auth.config");
 
 module.exports.checkDuplicateUsernameOrEmail = async (req, res, next) => {
   // Username
-  console.log("middleware", req.body);
   UserModel.findOne({
     where: {
       username: req.body.username,
@@ -27,8 +26,6 @@ module.exports.checkDuplicateUsernameOrEmail = async (req, res, next) => {
 //Signup Login
 
 module.exports.signup = async (req, res) => {
-  // eslint-disable-next-line
-  
   UserModel.create({
     username: req?.body?.username,
     password: bcrypt.hashSync(req.body.password, 8),
@@ -62,7 +59,6 @@ module.exports.signin = async (req, res) => {
     var token = jwt.sign({ id: user.id }, config.secret, {
       expiresIn: 1.577e8, // 24 hours
     });
-    console.log(req.body, "request");
     const data = await UserModel.update(
       { playerId: req.body.playerId, loggedInAt: new Date() },
       {
@@ -71,7 +67,6 @@ module.exports.signin = async (req, res) => {
         },
       }
     );
-    console.log(data, "data");
     res.status(200).send({
       id: user.id,
       name: user.username,

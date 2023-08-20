@@ -1,5 +1,4 @@
 const db = require("../../models/index");
-const GroupModel = db.groups;
 const UserGroupAssociationModel = db.user_group_associations;
 module.exports.get = async (request, response) => {
   try {
@@ -29,7 +28,6 @@ module.exports.get = async (request, response) => {
       const id = group?.groupId;
       const indexToDelete = arr.findIndex((obj) => obj.groupId === id);
       const data = arr[indexToDelete];
-      console.log("data", data);
       if (indexToDelete !== -1) {
         arr.splice(indexToDelete, 1);
       }

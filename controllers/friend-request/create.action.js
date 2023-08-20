@@ -8,9 +8,7 @@ module.exports.create = async (request, response) => {
     let {
       body: { senderId, receiverIds },
     } = request;
-    console.log(senderId,receiverIds,"create");
     receiverIds = JSON.parse(receiverIds);
-    console.log(senderId,receiverIds);
     const receivers = await UserModel.findAll({
       where: {
         id: { [Op.in]: receiverIds },
@@ -26,13 +24,13 @@ module.exports.create = async (request, response) => {
     if (!receivers || !sender) {
       response.status(404).json("User Not Found");
     }
-    const uniqDate = Date.now().toString();
 
-   console.log(sender,receivers);
+    let count = 1;
     const body = receivers?.map((receiver) => {
       const itemReceiver = { ...receiver.get() };
       const itemSender = { ...sender.get() };
-      console.log(sender, receiver, itemReceiver, itemSender);
+      const uniqDate = `${count}${Date.now().toString()}`;
+      count += 1;
       return {
         senderId: itemSender?.id,
         receiverId: itemReceiver?.id,
@@ -41,13 +39,12 @@ module.exports.create = async (request, response) => {
         roomId: uniqDate,
       };
     });
-    console.log(body);
+
     const data = await FriendRequestModel.bulkCreate(body);
 
     response.status(200).json("Send request has been sent successfully");
-  } catch(error) {
-    console.log(error)
+  } catch (error) {
+    console.log(error);
     response.status(500).json("Some Error Occured");
   }
 };
-

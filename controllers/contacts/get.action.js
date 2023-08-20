@@ -19,47 +19,47 @@ module.exports.get = async (request, response) => {
     }
 
     const data = await FriendRequestModel.findAll({
- 	 where: {
-   		 [Op.or]: [
-     			 { senderId: id },
-      			{ receiverId: id },
-    			],
-    	status: "accepted",
-  	},
-  	order: [["createdAt", "DESC"]],
-	});
-
-    const ids = []
-    const roomIds = {}
-    for(const item of data){
-        const req = { ...item.get() };
-	console.log(req,id);  
-	if(req?.senderId == id){
-              ids.push(req?.receiverId);
-              roomIds[req.receiverId] = req?.roomId          }
-          if(req?.receiverId == id){
-             ids.push(req.senderId);
-              roomIds[req.senderId] = req?.roomId
-          }
-    }
-    console.log(ids);
-    const users = await UserModel.findAll({
-  	where: {
-
-   	 id: {
-      	[Op.in]: ids,
-    	},
-  	},
+      where: {
+        [Op.or]: [{ senderId: id }, { receiverId: id }],
+        status: "accepted",
+      },
+      order: [["createdAt", "DESC"]],
     });
-   const item = []
-   console.log(roomIds,'roomIds');
-   for (const user of users){
-	const val = { ...user.get() }
-	item.push({id:val?.id,username:val?.username,playerId:val?.playerId,roomId:roomIds[val?.id]});
-   }
+
+    const ids = [];
+    const roomIds = {};
+    for (const item of data) {
+      const req = { ...item.get() };
+      if (req?.senderId == id) {
+        ids.push(req?.receiverId);
+        roomIds[req.receiverId] = req?.roomId;
+      }
+      if (req?.receiverId == id) {
+        ids.push(req.senderId);
+        roomIds[req.senderId] = req?.roomId;
+      }
+    }
+
+    const users = await UserModel.findAll({
+      where: {
+        id: {
+          [Op.in]: ids,
+        },
+      },
+    });
+    const item = [];
+
+    for (const user of users) {
+      const val = { ...user.get() };
+      item.push({
+        id: val?.id,
+        username: val?.username,
+        playerId: val?.playerId,
+        roomId: roomIds[val?.id],
+      });
+    }
     response.status(200).json(item);
   } catch {
     response.status(500).json("Some Error Occured");
   }
 };
-

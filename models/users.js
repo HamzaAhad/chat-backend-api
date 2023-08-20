@@ -27,9 +27,10 @@ module.exports = (sequelize, DataTypes) => {
       playerId: DataTypes.STRING,
       loggedInAt: DataTypes.DATE,
       removeAllAfter: {
-	type: DataTypes.INTEGER,
-	defaultValue : 10,
-	}
+        type: DataTypes.INTEGER,
+        defaultValue: 10,
+      },
+      clientId: DataTypes.STRING,
     },
     {
       sequelize,

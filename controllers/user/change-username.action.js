@@ -15,20 +15,19 @@ module.exports.changeUsername = async (request, response) => {
       },
     });
 
-    console.log(user);
     if (user.length) {
       response.status(403).json("Username already exists");
     }
-    if (!user.length){
-    const data = await UserModel.update(
-      { username },
-      {
-        where: {
-          id,
-        },
-      }
-    );
-   }
+    if (!user.length) {
+      const data = await UserModel.update(
+        { username },
+        {
+          where: {
+            id,
+          },
+        }
+      );
+    }
     response.status(200).json("Updated");
   } catch {
     response.status(500).json("Some Error Occured");

@@ -1,4 +1,3 @@
-
 const db = require("../../models/index");
 const UserModel = db.users;
 const FriendRequestModel = db.friend_requests;
@@ -8,16 +7,22 @@ module.exports.accept = async (request, response) => {
     const {
       body: { senderId, receiverId },
     } = request;
-    console.log("id", senderId, receiverId);
+
     const req = await FriendRequestModel.findOne({
       where: {
         id: [senderId, receiverId],
       },
     });
-    console.log(req);
+
     if (!req) {
       response.status(404).json("User Not Found");
     }
+
+    const receiver = await UserModel.findOne({
+      where: {
+        id: receiverId,
+      },
+    });
 
     const data = await FriendRequestModel.update(
       {
@@ -40,13 +45,12 @@ module.exports.reject = async (request, response) => {
     const {
       body: { senderId, receiverId },
     } = request;
-    console.log("id", senderId, receiverId);
+
     const req = await FriendRequestModel.findOne({
       where: {
         id: [senderId, receiverId],
       },
     });
-    console.log(req);
     if (!req) {
       response.status(404).json("User Not Found");
     }

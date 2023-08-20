@@ -2,26 +2,19 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("users", {
+    await queryInterface.createTable("track_messages", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      username: {
-        type: Sequelize.STRING,
+      roomId: {
+        type: Sequelize.BIGINT,
       },
-      password: {
-        type: Sequelize.STRING,
-      },
-      playerId: Sequelize.STRING,
-      loggedInAt: Sequelize.DATE,
-      removeAllAfter: {
+      userId: {
         type: Sequelize.INTEGER,
-        defaultValue: 10,
       },
-      clientId: Sequelize.STRING,
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -33,6 +26,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("users");
+    await queryInterface.dropTable("track_messages");
   },
 };

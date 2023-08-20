@@ -7,7 +7,7 @@ module.exports.get = async (request, response) => {
     const {
       params: { id },
     } = request;
-   console.log(id);
+
     const user = await UserModel.findOne({
       where: {
         id,
@@ -24,10 +24,9 @@ module.exports.get = async (request, response) => {
       },
       order: [["createdAt", "DESC"]],
     });
-   console.log("data",data)
     response.status(200).json(data);
-  } catch(error) {
-    console.log(error)
+  } catch (error) {
+    console.log(error);
     response.status(500).json("Some Error Occured");
   }
 };
